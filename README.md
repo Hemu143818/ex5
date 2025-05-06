@@ -32,12 +32,140 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 ## PROGRAM :
+```
+math.html
 
+<html>
+    <head>
+        <style>
+            body {
+                background: linear-gradient(135deg, #2C3E50, #061320);
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                
+            }
+
+            h1 {
+                color: white;
+                font-style: oblique;
+                text-align: center;
+                font-size: 50;
+                
+
+            }
+
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(211, 211, 211, 0.278);
+                width: 400px;
+                height: 300px;
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            label {
+                font-size: 20px;
+                color: rgb(255, 234, 0);
+            }
+
+            input {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+                width: 100%;
+            }
+
+            button {
+                padding: 10px;
+                background-color: rgb(0, 94, 255);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <h1>Power of a Lamp Filament</h1><br>
+        <div class="inputs">
+            <form method="POST">
+                {% csrf_token %}
+                <label for="input1">Enter the intensity of the bulb(in W/m^2):</label>
+                <input type="text" id="input1" name="intensity" placeholder="Enter Intensity" value="{{I}}">
+                <label for="input2">Enter the resistance of the bulb(in ohm)</label>
+                <input type="text" id="input2" name="resistance" placeholder="Enter Resistance" value="{{R}}">
+                <button type="submit">Submit</button>
+            </form>
+            <label for="ans">Answer(in watts): </label>
+            <input type="text" id="ans" value="{{power}}" readonly>
+        </div>
+    </body>
+</html>
+
+
+views.py
+
+from django.shortcuts import render 
+def power(request): 
+    context={} 
+    context['power'] = "0" 
+    context['I'] = "0" 
+    context['R'] = "0" 
+    if request.method == 'POST': 
+        print("POST method is used")
+        I =float( request.POST.get('intensity','0'))
+        R = float(request.POST.get('resistance','0'))
+        print('request=',request) 
+        print('intensity=',I) 
+        print('resistance=',R) 
+        power = (((I)**2) * (R))
+        context['power'] = power 
+        context['I'] = I
+        context['R'] = R 
+        print('Power=',power) 
+    return render(request,'mathapp/math.html',context)
+
+
+urls.py
+
+from django.contrib import admin 
+from django.urls import path 
+from mathapp import views 
+urlpatterns = [ 
+    path('admin/', admin.site.urls), 
+    path('areaofrectangle/',views.power,name="areaofrectangle"),
+    path('',views.power,name="areaofrectangleroot")
+]
+
+
+```
 
 ## SERVER SIDE PROCESSING:
+![Screenshot 2025-05-06 140425](https://github.com/user-attachments/assets/6b39b7e4-022c-4106-aa0b-d186c51d3639)
 
 
 ## HOMEPAGE:
+![Screenshot 2025-05-06 135054](https://github.com/user-attachments/assets/8987d383-8ec0-4f1e-b219-780dcbbb98ea)
 
 
 ## RESULT:
